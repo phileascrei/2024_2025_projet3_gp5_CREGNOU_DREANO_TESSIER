@@ -287,63 +287,56 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 # import random
 # import pygame
 # import torch
 # import torch.nn as nn
 # import torch.optim as optim
-# from torch import Tensor
 
-# # pygame setup
+# # --- Paramètres généraux ---
 # pygame.init()
 # screen = pygame.display.set_mode((1280, 720))
 # clock = pygame.time.Clock()
 # running = True
-# speed = 300  # Vitesse constante
 # dt = 0
+# speed = 300  # Vitesse constante
 
-# # Déclaration globale des positions et de la vélocité
+# # Position du joueur et de la cible
 # player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 # target_pos = pygame.Vector2(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
-# velocity = pygame.Vector2(0, 0)  # Vélocité du joueur
+# velocity = pygame.Vector2(0, 0)
 
-# # Paramètres de punition
-# punish_threshold = 400  
-# punish_time_limit = 2  
-# punish_timer = 0  
+# # Punition si l'IA s'éloigne trop
+# punish_threshold = 400
+# punish_time_limit = 2
+# punish_timer = 0
 
-# # Classe du modèle d'IA
+# # Replay buffer
+# buffer_inputs = []
+# buffer_targets = []
+# BUFFER_SIZE = 1000
+# TRAINING_INTERVAL = 5  # Frames entre deux entraînements
+
+# # --- Définition du modèle ---
 # class DeplacementModel(nn.Module):
 #     def __init__(self):
 #         super(DeplacementModel, self).__init__()
-#         self.fc1 = nn.Linear(4, 64)  
+#         self.fc1 = nn.Linear(4, 64)
 #         self.fc2 = nn.Linear(64, 32)
-#         self.fc3 = nn.Linear(32, 2)  
+#         self.fc3 = nn.Linear(32, 2)
 
 #     def forward(self, x):
 #         x = torch.relu(self.fc1(x))
 #         x = torch.relu(self.fc2(x))
 #         return self.fc3(x)
 
-# # Entraînement du modèle
+# # --- Fonction d'entraînement ---
 # def entrainer_model(model, inputs, targets, optimizer, criterion):
 #     model.train()
 #     inputs = torch.tensor(inputs, dtype=torch.float32)
 #     targets = torch.tensor(targets, dtype=torch.float32)
 
 #     predictions = model(inputs)
-
 #     loss = criterion(predictions, targets)
 
 #     optimizer.zero_grad()
@@ -352,67 +345,260 @@
 
 #     return loss.item()
 
-# def train_ia():
-#     global player_pos, target_pos, punish_timer, velocity  
+# # --- IA logic ---
+# def train_ia(frame_count):
+#     global player_pos, target_pos, punish_timer, velocity
 
 #     screen.fill("black")
-
 #     pygame.draw.circle(screen, "red", player_pos, 40)
 #     pygame.draw.circle(screen, "green", target_pos, 10)
 
+#     # Préparation des données
 #     inputs = [player_pos.x, player_pos.y, target_pos.x, target_pos.y]
-    
 #     direction = target_pos - player_pos
 #     if direction.length() > 0:
-#         direction.normalize_ip()
+#         direction = direction.normalize()
 #     targets = [direction.x, direction.y]
 
-#     loss = entrainer_model(model, [inputs], [targets], optimizer, criterion)
+#     # Stocke les exemples dans le buffer
+#     buffer_inputs.append(inputs)
+#     buffer_targets.append(targets)
+#     if len(buffer_inputs) > BUFFER_SIZE:
+#         buffer_inputs.pop(0)
+#         buffer_targets.pop(0)
 
-#     inputs_tensor = torch.tensor([inputs], dtype=torch.float32)
-#     predicted_direction = model(inputs_tensor).detach().numpy()[0]
-    
-#     # Met à jour la vélocité au lieu de la position directement
-#     velocity.update(predicted_direction[0], predicted_direction[1])
-#     velocity = velocity.normalize() * speed  # Applique la vitesse constante
+#     # Entraîne toutes les X frames avec un batch aléatoire
+#     loss = 0.0
+#     if frame_count % TRAINING_INTERVAL == 0 and len(buffer_inputs) >= 10:
+#         sample_indices = random.sample(range(len(buffer_inputs)), min(32, len(buffer_inputs)))
+#         sample_inputs = [buffer_inputs[i] for i in sample_indices]
+#         sample_targets = [buffer_targets[i] for i in sample_indices]
+#         loss = entrainer_model(model, sample_inputs, sample_targets, optimizer, criterion)
 
-#     # Vérifier si la cible est atteinte
-#     if player_pos.distance_to(target_pos) < 25:
-#         target_pos = pygame.Vector2(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
-#         punish_timer = 0  
+#     # Prédiction et mise à jour de la vélocité
+#     with torch.no_grad():
+#         inputs_tensor = torch.tensor([inputs], dtype=torch.float32)
+#         predicted_direction = model(inputs_tensor)[0].numpy()
+#         velocity.update(predicted_direction[0], predicted_direction[1])
+#         if velocity.length() > 0:
+#             velocity = velocity.normalize() * speed
 
-#     # Vérifier si l'IA s'éloigne trop
+#     # Punition si trop loin
 #     if player_pos.distance_to(target_pos) > punish_threshold:
 #         punish_timer += dt
 #         if punish_timer > punish_time_limit:
-#             player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-#             target_pos = pygame.Vector2(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
-#             punish_timer = 0  
+#             player_pos.update(screen.get_width() / 2, screen.get_height() / 2)
+#             target_pos.update(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
+#             punish_timer = 0
 #             print("L'IA a été punie pour s'être éloignée trop longtemps !")
+#     else:
+#         punish_timer = 0
 
+#     # Nouvelle cible si atteinte
+#     if player_pos.distance_to(target_pos) < 25:
+#         target_pos.update(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
+
+#     # Affichage du loss
 #     font = pygame.font.SysFont('Arial', 24)
 #     loss_text = font.render(f"Loss: {loss:.4f}", True, (255, 255, 255))
 #     screen.blit(loss_text, (10, 10))
 
-# # Initialiser le modèle
+# # --- Initialisation du modèle ---
 # model = DeplacementModel()
 # optimizer = optim.Adam(model.parameters(), lr=0.001)
 # criterion = nn.MSELoss()
 
-# # Boucle principale du jeu
+# # --- Boucle principale ---
+# frame_count = 0
 # while running:
 #     for event in pygame.event.get():
 #         if event.type == pygame.QUIT:
 #             running = False
 
-#     train_ia()
-
-#     # Appliquer la vélocité mise à jour à la position
+#     train_ia(frame_count)
 #     player_pos += velocity * dt
-
 #     pygame.display.flip()
 #     dt = clock.tick(60) / 1000
+#     frame_count += 1
 
 # pygame.quit()
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import random
+import pygame
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import matplotlib.pyplot as plt
+import numpy as np
+
+# --- Pygame setup ---
+pygame.init()
+screen = pygame.display.set_mode((1280, 720))
+clock = pygame.time.Clock()
+running = True
+speed = 1000
+dt = 0
+
+# Positions initiales
+player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+target_pos = pygame.Vector2(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
+velocity = pygame.Vector2(0, 0)
+
+# Punition
+punish_threshold = 400
+punish_time_limit = 2
+punish_timer = 0
+
+# Mémoire de replay
+replay_buffer = []
+buffer_size = 1000
+batch_size = 32
+
+# Historique du loss
+loss_history = []
+
+# --- Modèle IA ---
+class DeplacementModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(4, 64)
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Linear(32, 2)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        return self.fc3(x)
+
+# Entraînement
+def entrainer_model(model, inputs, targets, optimizer, criterion):
+    model.train()
+    inputs = torch.tensor(inputs, dtype=torch.float32)
+    targets = torch.tensor(targets, dtype=torch.float32)
+
+    predictions = model(inputs)
+    loss = criterion(predictions, targets)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    return loss.item()
+
+def train_ia():
+    global player_pos, target_pos, punish_timer, velocity
+
+    screen.fill("black")
+    pygame.draw.circle(screen, "red", player_pos, 40)
+    pygame.draw.circle(screen, "green", target_pos, 10)
+
+    inputs = [player_pos.x, player_pos.y, target_pos.x, target_pos.y]
+    direction = target_pos - player_pos
+    if direction.length() > 0:
+        direction.normalize_ip()
+    targets = [direction.x, direction.y]
+
+    # Ajouter à la mémoire
+    if len(replay_buffer) >= buffer_size:
+        replay_buffer.pop(0)
+    replay_buffer.append((inputs, targets))
+
+    # Entraînement si assez d'exemples
+    loss = 0.0
+    if len(replay_buffer) >= batch_size:
+        batch = random.sample(replay_buffer, batch_size)
+        batch_inputs, batch_targets = zip(*batch)
+        loss = entrainer_model(model, batch_inputs, batch_targets, optimizer, criterion)
+        loss_history.append(loss)
+
+    # Prédiction
+    inputs_tensor = torch.tensor([inputs], dtype=torch.float32)
+    predicted_direction = model(inputs_tensor).detach().numpy()[0]
+    velocity.update(predicted_direction[0], predicted_direction[1])
+
+    if velocity.length() > 0:
+        velocity = velocity.normalize() * speed
+
+    # Détection cible atteinte
+    if player_pos.distance_to(target_pos) < 25:
+        target_pos.update(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
+        punish_timer = 0
+
+    # Punition si trop loin
+    if player_pos.distance_to(target_pos) > punish_threshold:
+        punish_timer += dt
+        if punish_timer > punish_time_limit:
+            player_pos.update(screen.get_width() / 2, screen.get_height() / 2)
+            target_pos.update(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()))
+            punish_timer = 0
+            print("L'IA a été punie pour s'être éloignée trop longtemps !")
+
+    font = pygame.font.SysFont('Arial', 24)
+    loss_text = font.render(f"Loss: {loss:.4f}", True, (255, 255, 255))
+    screen.blit(loss_text, (10, 10))
+
+# Initialisation modèle
+model = DeplacementModel()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+criterion = nn.MSELoss()
+
+# --- Boucle principale ---
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    train_ia()
+    player_pos += velocity * dt
+    pygame.display.flip()
+    dt = clock.tick(60) / 1000
+
+pygame.quit()
+
+# --- Afficher courbe du loss ---
+if loss_history:
+    plt.figure(figsize=(10, 4))
+    plt.plot(loss_history, label="Loss")
+    plt.title("Évolution du Loss au cours de l'entraînement")
+    plt.xlabel("Itération d'entraînement")
+    plt.ylabel("Loss")
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+else:
+    print("Aucune donnée de loss à afficher.")
