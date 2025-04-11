@@ -6,7 +6,7 @@ class AnimateSprite(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(f'assets/player_sprite_sheet/PNG/Unarmed_Run/{sprite_name}.png').convert_alpha()
         self.current_image = 0
-        self.images = animations.get('player_running')
+        self.images = animations.get('Unarmed_Run_full')
     def animate(self):
         self.current_image += 0.1
         if self.current_image >= len(self.images):
@@ -26,6 +26,6 @@ def load_animation_images(sprite_name):
     return images
 
 animations = {
-    'player_running': load_animation_images('Unarmed_Run_full')}
+    'Unarmed_Run_full': load_animation_images('Unarmed_Run_full')}
 
         

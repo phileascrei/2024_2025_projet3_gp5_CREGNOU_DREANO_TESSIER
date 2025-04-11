@@ -17,6 +17,10 @@ class Player(animation.AnimateSprite):
             
         }
 
+    def change_animation(self, name): 
+        self.image = self.images[name]
+        self.image.set_colorkey([0, 0, 0])
+
     def move_right(self): self.position[0] += 2
     def move_left(self): self.position[0] -= 2
     def move_up(self): self.position[1] -= 2   
