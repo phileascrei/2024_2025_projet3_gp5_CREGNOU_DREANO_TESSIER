@@ -11,14 +11,16 @@ clock = pygame.time.Clock()
 sprite_sheet = pygame.image.load("assets/player_sprite_sheet/PNG/Unarmed_Run/Unarmed_Run_full.png").convert_alpha()
 
 # Paramètres de la sprite sheet
-FRAME_WIDTH = 48
-FRAME_HEIGHT = 48
-ROWS = 5
-COLS = 8
+FRAME_WIDTH = 64
+FRAME_HEIGHT = 64
+FRAME_COUNT = 32  # Nombre total de frames dans la sprite sheet
+FRAME_ROWS = 4  # Nombre de lignes dans la sprite sheet
+FRAME_COLS = 8  # Nombre de colonnes dans la sprite sheet
+
 
 # Extraction des frames (ligne 2 = vers la droite par exemple)
 def get_frames(row):
-    return [sprite_sheet.subsurface(pygame.Rect(col * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)) for col in range(COLS)]
+    return [sprite_sheet.subsurface(pygame.Rect(col * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)) for col in range(FRAME_COLS)]
 
 run_frames = get_frames(1)  # Ligne 2 = vers la droite
 
