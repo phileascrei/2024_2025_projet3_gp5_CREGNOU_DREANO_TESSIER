@@ -1,12 +1,12 @@
 
 
-from animation import *
-from pygame import *
+import animation
+import pygame
 
 
-class Player(AnimateSprite):
+class Player(animation.AnimateSprite):
     def __init__(self,x ,y):
-        super().__init__("Unarmed_Run_full")
+        super().__init__("assets/player_sprite_sheet/PNG/Unarmed_Run/Unarmed_Run_full.png")
         self.image = self.get_image(0, 0)
         self.image.set_colorkey([0, 0, 0])
         self.rect = self.image.get_rect()
