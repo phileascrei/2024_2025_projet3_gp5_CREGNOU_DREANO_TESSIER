@@ -1,55 +1,129 @@
+# import pygame
+# import sys
+
+# # Initialisation de Pygame
+# pygame.init()
+
+# # Chargement de l'image sprite sheet
+# sprite_sheet = pygame.image.load("assets/DS DSi - Jump Super Stars - Arale.png")
+# sprite_sheet.set_colorkey((0, 0, 255))  # Supprime le bleu
+
+# # Dimensions d'une frame individuelle (à ajuster)
+# frame_width = 30
+# frame_height = 45
+
+# # Extraction des frames (par exemple les 8 premières de la première ligne)
+# frames = []
+# for i in range(4):  # nombre de frames à animer
+#     frame = sprite_sheet.subsurface((i * frame_width, 0, frame_width, frame_height))
+#     frames.append(frame)
+
+# # Création de la fenêtre d'affichage
+# screen = pygame.display.set_mode((frame_width * 10, frame_height * 10))
+# pygame.display.set_caption("Animation d'Arale")
+
+# # Horloge pour contrôler la vitesse de l'animation
+# clock = pygame.time.Clock()
+
+# # Index de frame
+# frame_index = 0
+
+# # Boucle principale
+# running = True
+# while running:
+#     screen.fill((0, 0, 0))  # Fond noir au lieu du bleu
+ 
+
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+
+#         if event.type == pygame.KEYDOWN:
+#             if event.key == pygame.K_RIGHT:  # Touche flèche droite
+#                 current_frames = run_frames
+#             elif event.key == pygame.K_LEFT:  # Touche flèche gauche
+#                 current_frames = idle_frames
+
+#     # Affichage de la frame actuelle
+#     current_frame = pygame.transform.scale(frames[frame_index], (frame_width * 2, frame_height * 2))
+#     screen.blit(current_frame, (0, 0))
+
+#     # Avancer à la frame suivante
+#     frame_index = (frame_index + 1) % len(frames)
+
+#     # Rafraîchissement
+#     pygame.display.flip()
+#     clock.tick(6)  # 6 FPS
+
+# # Fermeture
+# pygame.quit()
+# sys.exit()
+
+
+
+
+
+
+
 import pygame
 import sys
 
-# Initialisation
+# Initialisation de Pygame
 pygame.init()
-screen = pygame.display.set_mode((640, 480))
-pygame.display.set_caption("Jeu 2D - Animation de course")
+
+# Création de la fenêtre d'affichage (doit être avant le chargement de l'image)
+screen = pygame.display.set_mode((300, 300))  # Taille arbitraire pour l'exemple
+pygame.display.set_caption("Animation d'Arale")
+
+# Chargement de l'image sprite sheet
+sprite_sheet = pygame.image.load("assets/DS DSi - Jump Super Stars - Arale.png").convert()
+sprite_sheet.set_colorkey((0, 0, 255))  # Supprime le bleu
+
+# Dimensions d'une frame individuelle (à ajuster)
+frame_width = 30
+frame_height = 45
+
+# Extraction des animations (par exemple, 2 animations différentes)
+idle_frames = [sprite_sheet.subsurface((i * frame_width, 0, frame_width, frame_height)) for i in range(4)]
+run_frames = [sprite_sheet.subsurface((i * frame_width, frame_height, frame_width, frame_height)) for i in range(8)]
+
+# Animation actuelle
+current_frames = idle_frames
+
+# Horloge pour contrôler la vitesse de l'animation
 clock = pygame.time.Clock()
 
-# Chargement de la sprite sheet
-sprite_sheet = pygame.image.load("assets/player_sprite_sheet/PNG/Unarmed_Run/Unarmed_Run_full.png").convert_alpha()
-
-# Paramètres de la sprite sheet
-FRAME_WIDTH = 64
-FRAME_HEIGHT = 64
-FRAME_COUNT = 32  # Nombre total de frames dans la sprite sheet
-FRAME_ROWS = 4  # Nombre de lignes dans la sprite sheet
-FRAME_COLS = 8  # Nombre de colonnes dans la sprite sheet
-
-
-# Extraction des frames (ligne 2 = vers la droite par exemple)
-def get_frames(row):
-    return [sprite_sheet.subsurface(pygame.Rect(col * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)) for col in range(FRAME_COLS)]
-
-run_frames = get_frames(1)  # Ligne 2 = vers la droite
-
-# Position du personnage
-x, y = 100, 100
+# Index de frame
 frame_index = 0
-frame_delay = 100  # en millisecondes
-last_update = pygame.time.get_ticks()
 
 # Boucle principale
 running = True
 while running:
-    screen.fill((0, 0, 0))
+    screen.fill((0, 0, 0))  # Fond noir
 
-    # Gestion des événements
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Animation
-    now = pygame.time.get_ticks()
-    if now - last_update > frame_delay:
-        frame_index = (frame_index + 1) % len(run_frames)
-        last_update = now
+        # Changer d'animation avec une touche
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:  # Touche flèche droite
+                frame_width = 30
+                current_frames = run_frames
+            elif event.key == pygame.K_LEFT:  # Touche flèche gauche
+                current_frames = idle_frames
 
-    screen.blit(run_frames[frame_index], (x, y))
+    # Affichage de la frame actuelle
+    current_frame = pygame.transform.scale(current_frames[frame_index], (frame_width * 2, frame_height * 2))
+    screen.blit(current_frame, (0, 0))
 
+    # Avancer à la frame suivante
+    frame_index = (frame_index + 1) % len(current_frames)
+
+    # Rafraîchissement
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(6)  # 6 FPS
 
+# Fermeture
 pygame.quit()
 sys.exit()
