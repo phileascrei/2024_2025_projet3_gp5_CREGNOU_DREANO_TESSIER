@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="24" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="5">
+ <tileset firstgid="1" source="sol.tsx"/>
+ <imagelayer id="1" name="Background">
+  <image source="stage01.png" width="768" height="805"/>
+ </imagelayer>
+ <layer id="5" name="sol" width="24" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGwSgYWYCRxhgADhAAGQ==
+  </data>
+ </layer>
+ <objectgroup id="6" name="Calque d'Objets 1">
+  <object id="4" x="-2" y="771" width="768" height="30"/>
+ </objectgroup>
+</map>
