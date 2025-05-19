@@ -52,7 +52,7 @@ class Player:
             self.frame_index = 0
             return
 
-        if touches[pygame.K_SPACE] and not self.is_attacking:
+        if touches[pygame.K_e] and not self.is_attacking:
             self.frame_index = 0
             self.is_attacking = True
 
