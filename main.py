@@ -4,6 +4,11 @@ from data import *
 
 
 
+# === INITIALISATION ===
+pygame.init()
+fenetre = pygame.display.set_mode((CONFIG["WINDOW_WIDTH"], CONFIG["WINDOW_HEIGHT"]))
+pygame.display.set_caption("Marvel - Captain America")
+sprite_sheet = pygame.image.load("assets/Arcade - Marvel vs Capcom - Captain America.jpg").convert_alpha()
 
 
 
@@ -33,4 +38,4 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
-sys.exit()
+sys.exit() 
