@@ -10,6 +10,6 @@
   </data>
  </layer>
  <objectgroup id="6" name="Calque d'Objets 1">
-  <object id="4" x="-2" y="771" width="768" height="30"/>
+  <object id="4" name="Collision" x="-2" y="771" width="768" height="30"/>
  </objectgroup>
 </map>
