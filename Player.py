@@ -42,7 +42,7 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.midbottom = (self.pos_x, self.pos_y)
 
-    def update(self, touches):
+    def update(self, touches, collision_rects=[]):
         if self.is_dodging:
             self._update_dodge()
             return
@@ -71,6 +71,7 @@ class Player:
         self._handle_movement(touches, courir)
         self._handle_jump(touches)
         self._apply_gravity()
+        self.check_collisions(collision_rects)
         self._update_animation()
 
     def start_attack(self):
@@ -171,4 +172,15 @@ class Player:
         pygame.draw.rect(surface, ROUGE, (x, y, bar_width, bar_height))
         pygame.draw.rect(surface, VERT, (x, y, fill, bar_height))
         pygame.draw.rect(surface, NOIR, (x, y, bar_width, bar_height), 2)
+
+    def check_collisions(self, collision_rects):
+        self.rect.midbottom = (int(self.pos_x), int(self.pos_y))
+        for rect in collision_rects:
+            if self.rect.colliderect(rect):
+            # Collision verticale descendante
+                if self.vitesse_y > 0:
+                    self.pos_y = rect.top
+                    self.vitesse_y = 0
+                    self.in_air = False
+
 

@@ -11,8 +11,9 @@ sprite_file = "assets/Arcade - Marvel vs Capcom - Captain America.jpg"
 
 # === CONFIGURATION ===
 CONFIG = {
-    "WINDOW_WIDTH": 960,
-    "WINDOW_HEIGHT": 540,
+    "WINDOW_WIDTH": 1920,
+    "WINDOW_HEIGHT": 1080,
+    "WINDOW_TITLE": "Fighting Game",
     "PLAYER_WIDTH": 100,
     "PLAYER_HEIGHT": 140,
     "FPS": 60,

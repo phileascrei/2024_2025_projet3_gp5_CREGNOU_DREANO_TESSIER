@@ -12,6 +12,7 @@ sprite_sheet = pygame.image.load(sprite_file).convert_alpha()
 def get_frame(x, y, largeur, hauteur):
     frame = pygame.Surface((largeur, hauteur), pygame.SRCALPHA)
     frame.blit(sprite_sheet, (0, 0), (x, y, largeur, hauteur))
+    frame.set_colorkey((0,255,1,255))
     return frame
 
 def load_frames(anim_name):
