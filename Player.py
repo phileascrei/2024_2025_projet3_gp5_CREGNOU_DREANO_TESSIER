@@ -52,7 +52,7 @@ class Player:
             self.frame_index = 0
             return
 
-        if touches[pygame.K_e] and not self.is_attacking:
+        if touches[pygame.K_SPACE] and not self.is_attacking:
             self.frame_index = 0
             self.is_attacking = True
 
@@ -101,13 +101,13 @@ class Player:
     def _update_dodge(self):
         self.etat = "dodge"
         self.frame_index += CONFIG["ANIMATION_SPEED"]
-        recul = 10
-        if self.last_dir == "right":
-            self.pos_x -= recul
+        
+        if self.facing_left:
+            self.pos_x += CONFIG["RECULE"]
             if self.pos_x < 0:
                 self.pos_x = 0
         else:
-            self.pos_x += recul
+            self.pos_x -= CONFIG["RECULE"]
             if self.pos_x > CONFIG["WINDOW_WIDTH"]:
                 self.pos_x = CONFIG["WINDOW_WIDTH"]
         if self.frame_index >= len(self.frames_dict["dodge"]):
