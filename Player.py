@@ -1,6 +1,7 @@
-from data import *
+from data import ROUGE, VERT, NOIR, CONFIG
 import pygame
 from tools import *
+import random
 
 
 class Player:
@@ -31,8 +32,10 @@ class Player:
             "walk": load_frames("walk"),
             "run": load_frames("run"),
             "jump": load_frames("jump"),
-            "attack": load_frames("attack"),
-            "dodge": load_frames("dodge")
+            "dodge": load_frames("dodge"),
+            "attack_1": load_frames("attack_1"),
+            "attack_2": load_frames("attack_2"),
+            "attack_3": load_frames("attack_3")
         }
 
         self.image = self.frames_dict["idle"][0]
@@ -55,15 +58,37 @@ class Player:
         if touches[pygame.K_e] and not self.is_attacking:
             self.frame_index = 0
             self.is_attacking = True
+            self.start_attack()
+            return
 
         if self.is_attacking:
-            self._update_attack()
-            return
+            self.frame_index += CONFIG["ANIMATION_SPEED"]
+            if self.frame_index >= len(self.frames_dict[self.etat]):
+                self.is_attacking = False
+                self.etat = "idle"
+                self.frame_index = 0
 
         self._handle_movement(touches, courir)
         self._handle_jump(touches)
         self._apply_gravity()
         self._update_animation()
+
+    def start_attack(self):
+        # Probabilités : attack_3 très rare
+        attacks = ["attack_1", "attack_2", "attack_3"]
+        weights = [0.48, 0.48, 0.04]  # 4% pour attack_3, 48% pour les autres
+        chosen_attack = random.choices(attacks, weights=weights, k=1)[0]
+        self.etat = chosen_attack
+        self.frame_index = 0
+        self.is_attacking = True
+
+        # Dash avant si attack_3
+        if chosen_attack == "attack_3":
+            dash_distance = random.randint(30, 50)
+            if self.facing_left:
+                self.pos_x -= dash_distance
+            else:
+                self.pos_x += dash_distance
 
     def _handle_movement(self, touches, courir):
         if not self.is_charging_jump:
@@ -91,9 +116,9 @@ class Player:
                 self.is_charging_jump = False
 
     def _update_attack(self):
-        self.etat = "attack"
+        self.etat = "attack_2"
         self.frame_index += CONFIG["ANIMATION_SPEED"]
-        if self.frame_index >= len(self.frames_dict["attack"]):
+        if self.frame_index >= len(self.frames_dict["attack_2"]):
             self.frame_index = 0
             self.is_attacking = False
         self._apply_gravity()
