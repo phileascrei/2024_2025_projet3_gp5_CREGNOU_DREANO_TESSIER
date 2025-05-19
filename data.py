@@ -5,7 +5,7 @@ from Player import *
 
 
 # SPRITE SHEET
-sprite_file = r"H:\Documents/NSI/project 3\2024_2025_project3_gp5_CREGNOU_DREANO_TESSIER\assets\Arcade - Marvel vs Capcom - Captain America.jpg"
+sprite_file = "assets/Arcade - Marvel vs Capcom - Captain America.jpg"
 
 
 
