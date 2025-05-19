@@ -9,7 +9,7 @@ sprite_file = r"H:\Documents/NSI/project 3\2024_2025_project3_gp5_CREGNOU_DREANO
 
 
 
-# CONFIGURATION
+# === CONFIGURATION ===
 CONFIG = {
     "WINDOW_WIDTH": 960,
     "WINDOW_HEIGHT": 540,
@@ -21,7 +21,8 @@ CONFIG = {
     "GRAVITY": 1,
     "JUMP_FORCE": 18,
     "ANIMATION_SPEED": 0.2,
-    "MAX_HEALTH": 100
+    "MAX_HEALTH": 100,
+    "RECULE" : 10
 }
 
 # COULEURS 
@@ -33,14 +34,12 @@ NOIR = (0, 0, 0)
 
 
 
-# ANIMATIONS 
+# === ANIMATIONS ===
 animations_data = {
     "idle": {"frames": 9, "width": 97, "height": 135, "line": 0},
     "walk": {"frames": 6, "width": 100, "height": 135, "line": 150},
-    "run":  {"frames": 6, "width": 100, "height": 135, "line": 285},
+    "run": {"frames": 6, "width": 100, "height": 135, "line": 285},
     "jump": {"frames": 6, "width": 100, "height": 170, "line": 420},
     "attack": {"frames": 8, "widths": [95, 145, 100, 130, 110, 140, 130, 100], "height": 150, "line": 840},
-    "dodge": {"frames": 5,"widths": [120, 170, 160, 110, 110],"height": 130,"line": 2860}
+    "dodge": {"frames": 5, "widths": [120, 170, 160, 110, 110], "height": 130, "line": 2860}
 }
-
-
