@@ -5,7 +5,7 @@ from Player import *
 
 
 # SPRITE SHEET
-sprite_file = "assets/Arcade - Marvel vs Capcom - Captain America.jpg"
+sprite_file = "assets/Arcade - Marvel vs Capcom - Captain America.png"
 
 
 
