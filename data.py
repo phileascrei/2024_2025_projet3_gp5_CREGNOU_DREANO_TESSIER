@@ -23,7 +23,10 @@ CONFIG = {
     "JUMP_FORCE": 18,
     "ANIMATION_SPEED": 0.2,
     "MAX_HEALTH": 100,
-    "RECULE" : 10
+    "RECULE" : 10,
+    "DASH_SPEED" : 100,
+    "ATTACK_PROBABILITY" : [0.3,0.3,0.4],
+
 }
 
 # COULEURS 
