@@ -70,12 +70,20 @@ while running:
     if joueur1.can_hit() and joueur1.rect.colliderect(joueur2.rect) and not joueur2.is_dodging:
         joueur2.health -= joueur1.get_attack_damage()
         joueur1.last_attack_frame = int(joueur1.frame_index)
+        # Annule l'attaque et l'animation de joueur2 s'il prend des dégâts
+        joueur2.is_attacking = False
+        joueur2.etat = "idle"
+        joueur2.frame_index = 0
         if joueur2.health < 0:
             joueur2.health = 0
 
     if joueur2.can_hit() and joueur2.rect.colliderect(joueur1.rect) and not joueur1.is_dodging:
         joueur1.health -= joueur2.get_attack_damage()
         joueur2.last_attack_frame = int(joueur2.frame_index)
+        # Annule l'attaque et l'animation de joueur1 s'il prend des dégâts
+        joueur1.is_attacking = False
+        joueur1.etat = "idle"
+        joueur1.frame_index = 0
         if joueur1.health < 0:
             joueur1.health = 0
 
