@@ -5,25 +5,27 @@ from data import CONFIG, ROUGE, VERT, NOIR
 from tools import load_frames
 
 class Player:
-    def __init__(self, x, y, left_key, right_key, jump_key, run_key):
+    def __init__(self, x, y, left_key, right_key, jump_key, run_key, dodge_key, attack_key):
         self.pos_x = x
         self.pos_y = y
         self.vitesse_y = 0
-        self.in_air = False
-        self.etat = "idle"
         self.frame_index = 0
-        self.is_attacking = False
-        self.attack_type = None  # <- pour choisir l'attaque
-        self.is_charging_jump = False
         self.charge_jump_timer = 0
+        self.in_air = False        
+        self.is_attacking = False
+        self.attack_type = None 
+        self.is_charging_jump = False       
         self.is_dodging = False
-        self.last_dir = "right"
         self.facing_left = False
+        self.etat = "idle"
+        self.last_dir = "right"
 
         self.left_key = left_key
         self.right_key = right_key
         self.jump_key = jump_key
         self.run_key = run_key
+        self.dodge_key = dodge_key
+        self.attack_key = attack_key
 
         self.health = CONFIG["MAX_HEALTH"]
 
@@ -47,12 +49,12 @@ class Player:
             self._update_dodge()
             return
 
-        if touches[pygame.K_s] and not self.in_air and not self.is_charging_jump and not self.is_attacking:
+        if touches[self.dodge_key] and not self.in_air and not self.is_charging_jump and not self.is_attacking:
             self.is_dodging = True
             self.frame_index = 0
             return
 
-        if touches[pygame.K_e] and not self.is_attacking and not self.is_dodging and not self.in_air:
+        if touches[self.attack_key] and not self.is_attacking and not self.is_dodging and not self.in_air:
             self.frame_index = 0
             self.is_attacking = True
             self.start_attack()

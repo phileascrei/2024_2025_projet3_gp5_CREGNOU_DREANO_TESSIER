@@ -49,3 +49,12 @@ def load_frames(anim_name):
                 if y_offset2 is None:
                     y_offset += data["height"]
     return frames
+
+
+def draw_map(surface, tmx_data):
+    for layer in tmx_data.layers:
+        if hasattr(layer, "image") and layer.image:
+            surface.blit(layer.image, (0, 0))  # image de fond
+        elif hasattr(layer, "tiles"):
+            for x, y, image in layer.tiles():
+                surface.blit(image, (x * tmx_data.tilewidth, y * tmx_data.tileheight))

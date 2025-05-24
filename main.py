@@ -27,19 +27,11 @@ for obj in tmx_data.objects:
     if obj.name.lower() == "collision":  # ignore la casse
         collision_rects.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
-# Affichage de la map (image layers + tile layers)
-def draw_map(surface, tmx_data):
-    for layer in tmx_data.layers:
-        if hasattr(layer, "image") and layer.image:
-            surface.blit(layer.image, (0, 0))  # image de fond
-        elif hasattr(layer, "tiles"):
-            for x, y, image in layer.tiles():
-                surface.blit(image, (x * tmx_data.tilewidth, y * tmx_data.tileheight))
 
 # === GAME LOOP ===
 clock = pygame.time.Clock()
-joueur1 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_q, pygame.K_d, pygame.K_z, pygame.K_LSHIFT)
-joueur2 = pygame.Rect(650, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], CONFIG["PLAYER_WIDTH"], CONFIG["PLAYER_HEIGHT"])
+joueur1 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_q, pygame.K_d, pygame.K_z, pygame.K_LSHIFT, pygame.K_s, pygame.K_e)
+joueur2 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_RCTRL, pygame.K_DOWN, pygame.K_RSHIFT)
 
 running = True
 while running:
@@ -56,6 +48,10 @@ while running:
     joueur1.update(touches, collision_rects)
     joueur1.draw(fenetre)
     joueur1.draw_health_bar(fenetre, 20, 20)
+
+    joueur2.update(touches, collision_rects)
+    joueur2.draw(fenetre)
+    joueur2.draw_health_bar(fenetre, 20, 20)
 
     pygame.draw.rect(fenetre, BLEU, joueur2)  # joueur2 temporaire
     pygame.display.flip()
