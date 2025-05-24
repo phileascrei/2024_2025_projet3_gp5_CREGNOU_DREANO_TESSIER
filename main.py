@@ -5,6 +5,7 @@ from pytmx.util_pygame import load_pygame
 
 from Player import *
 from data import *
+from tools import *
 
 # === INITIALISATION ===
 pygame.init()
@@ -28,6 +29,7 @@ for obj in tmx_data.objects:
         collision_rects.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
 
+
 # === GAME LOOP ===
 clock = pygame.time.Clock()
 joueur1 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_q, pygame.K_d, pygame.K_z, pygame.K_LSHIFT, pygame.K_s, pygame.K_e)
@@ -44,16 +46,16 @@ while running:
 
     touches = pygame.key.get_pressed()
 
-    draw_map(fenetre, tmx_data)  # affiche background + tuiles
+    draw_map(fenetre, tmx_data)
     joueur1.update(touches, collision_rects)
     joueur1.draw(fenetre)
     joueur1.draw_health_bar(fenetre, 20, 20)
 
     joueur2.update(touches, collision_rects)
     joueur2.draw(fenetre)
-    joueur2.draw_health_bar(fenetre, 20, 20)
+    joueur2.draw_health_bar(fenetre, CONFIG["WINDOW_WIDTH"] - 220, 20)
 
-    pygame.draw.rect(fenetre, BLEU, joueur2)  # joueur2 temporaire
+
     pygame.display.flip()
 
 pygame.quit()

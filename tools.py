@@ -1,5 +1,6 @@
 from data import sprite_file, animations_data, CONFIG
 import pygame
+from pytmx.util_pygame import load_pygame
 
 # === INITIALISATION ===
 pygame.init()
@@ -58,3 +59,5 @@ def draw_map(surface, tmx_data):
         elif hasattr(layer, "tiles"):
             for x, y, image in layer.tiles():
                 surface.blit(image, (x * tmx_data.tilewidth, y * tmx_data.tileheight))
+
+
