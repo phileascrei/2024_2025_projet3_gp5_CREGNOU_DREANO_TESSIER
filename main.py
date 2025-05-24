@@ -66,6 +66,20 @@ while running:
                 joueur2.pos_x = joueur1.rect.left - joueur2.rect.width // 2 + tolerance
 
 
+    # Gestion des dégâts
+    if joueur1.can_hit() and joueur1.rect.colliderect(joueur2.rect) and not joueur2.is_dodging:
+        joueur2.health -= joueur1.get_attack_damage()
+        joueur1.last_attack_frame = int(joueur1.frame_index)
+        if joueur2.health < 0:
+            joueur2.health = 0
+
+    if joueur2.can_hit() and joueur2.rect.colliderect(joueur1.rect) and not joueur1.is_dodging:
+        joueur1.health -= joueur2.get_attack_damage()
+        joueur2.last_attack_frame = int(joueur2.frame_index)
+        if joueur1.health < 0:
+            joueur1.health = 0
+
+
     pygame.display.flip()
 
 pygame.quit()

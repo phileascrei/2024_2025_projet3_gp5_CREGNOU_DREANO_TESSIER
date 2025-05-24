@@ -19,6 +19,7 @@ class Player:
         self.facing_left = False
         self.etat = "idle"
         self.last_dir = "right"
+        self.last_attack_frame = -1
 
         self.left_key = left_key
         self.right_key = right_key
@@ -179,3 +180,16 @@ class Player:
         self.is_dodging = False
         self.facing_left = False
         self.health = CONFIG["MAX_HEALTH"]
+
+
+    def get_attack_damage(self):
+        if self.etat == "attack_1":
+            return 1
+        elif self.etat == "attack_2":
+            return 1
+        elif self.etat == "attack_3":
+            return 3
+        return 0
+    
+    def can_hit(self):
+        return self.is_attacking and int(self.frame_index) == 2 
