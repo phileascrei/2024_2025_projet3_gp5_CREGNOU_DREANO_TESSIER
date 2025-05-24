@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="3">
  <imagelayer id="1" name="Background">
-  <image source="C:/Users/dreano-hoh/Downloads/stage01_resized.png" width="1920" height="1080"/>
+  <image source="stage01_resized.png" width="1920" height="1080"/>
  </imagelayer>
  <objectgroup id="3" name="Calque d'Objets 1">
   <object id="2" name="collision" x="-1.65254" y="1021.27" width="1923.55" height="67.754"/>

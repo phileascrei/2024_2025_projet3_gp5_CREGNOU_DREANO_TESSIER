@@ -7,6 +7,9 @@ from Player import *
 # SPRITE SHEET
 sprite_file = "assets/Arcade - Marvel vs Capcom - Captain America.png"
 
+# MAPS
+map_stage_01 = "map_stage01_resized.tmx"
+
 
 
 # === CONFIGURATION ===
@@ -23,9 +26,9 @@ CONFIG = {
     "JUMP_FORCE": 18,
     "ANIMATION_SPEED": 0.2,
     "MAX_HEALTH": 100,
-    "RECULE" : 10,
-    "DASH_SPEED" : 100,
-    "ATTACK_PROBABILITY" : [0.3,0.3,0.4],
+    "RECULE" : 10, # Valeur du recule pour une esquive
+    "DASH_SPEED" : 20, # Valeur du nombre de pixels à ajouter pour chaque frame du dash
+    "ATTACK_PROBABILITY" : [0.43, 0.43,0.04], # Probabilités d'attaque
 
 }
 

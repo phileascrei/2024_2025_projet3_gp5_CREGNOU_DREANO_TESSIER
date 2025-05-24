@@ -13,7 +13,7 @@ pygame.display.set_caption("Marvel - Captain America")
 sprite_sheet = pygame.image.load(sprite_file).convert_alpha()
 
 # === CHARGER LA MAP ===
-tmx_data = load_pygame("map_stage01_resized.tmx")
+tmx_data = load_pygame(map_stage_01)
 
 # Charger l'image de fond du calque "Background"
 background = None
