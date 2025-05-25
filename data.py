@@ -18,14 +18,14 @@ CONFIG = {
     "WINDOW_HEIGHT": 1080,
     "WINDOW_TITLE": "Fighting Game",
     "PLAYER_WIDTH": 100,
-    "PLAYER_HEIGHT": 140,
+    "PLAYER_HEIGHT": 170,
     "FPS": 60,
     "PLAYER_SPEED": 5,
     "PLAYER_RUN_SPEED": 9,
     "GRAVITY": 1,
     "JUMP_FORCE": 18,
     "ANIMATION_SPEED": 0.2,
-    "MAX_HEALTH": 100,
+    "MAX_HEALTH": 50,
     "RECULE" : 10, # Valeur du recule pour une esquive
     "DASH_SPEED" : 20, # Valeur du nombre de pixels à ajouter pour chaque frame du dash
     "ATTACK_PROBABILITY" : [0.43, 0.43,0.04], # Probabilités d'attaque

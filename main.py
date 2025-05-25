@@ -6,6 +6,7 @@ from pytmx.util_pygame import load_pygame
 from Player import *
 from data import *
 from tools import *
+from ia import FighterAI
 
 # === INITIALISATION ===
 pygame.init()
@@ -33,7 +34,9 @@ for obj in tmx_data.objects:
 # === GAME LOOP ===
 clock = pygame.time.Clock()
 joueur2 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_q, pygame.K_d, pygame.K_z, pygame.K_LSHIFT, pygame.K_s, pygame.K_e)
-joueur1 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_RCTRL, pygame.K_DOWN, pygame.K_RSHIFT)
+joueur1 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_f, pygame.K_h, pygame.K_t, pygame.K_RCTRL, pygame.K_g, pygame.K_r)
+ia = FighterAI(joueur2)
+
 
 running = True
 while running:
