@@ -17,6 +17,8 @@ class Player:
         self.is_charging_jump = False       
         self.is_dodging = False
         self.facing_left = False
+        self.is_stunned = False
+
         self.etat = "idle"
         self.last_dir = "right"
         self.last_attack_frame = -1
@@ -46,6 +48,11 @@ class Player:
         self.rect.midbottom = (self.pos_x, self.pos_y)
 
     def update(self, touches, collision_rects):
+
+        if self.is_stunned:
+            self._update_animation()
+            return
+
         if self.is_dodging:
             self._update_dodge()
             return
@@ -99,11 +106,11 @@ class Player:
 
     def _handle_movement(self, touches, courir):
         if not self.is_charging_jump:
-            if touches[self.left_key] and self.pos_x > 0:
+            if touches[self.left_key] and self.pos_x > 0 :
                 self.pos_x -= CONFIG["PLAYER_RUN_SPEED"] if courir else CONFIG["PLAYER_SPEED"]
                 self.etat = "run" if courir else "walk"
                 self.facing_left = True
-            elif touches[self.right_key] and self.pos_x < CONFIG["WINDOW_WIDTH"]:
+            elif touches[self.right_key] and self.pos_x < CONFIG["WINDOW_WIDTH"] :
                 self.pos_x += CONFIG["PLAYER_RUN_SPEED"] if courir else CONFIG["PLAYER_SPEED"]
                 self.etat = "run" if courir else "walk"
                 self.facing_left = False
@@ -151,6 +158,8 @@ class Player:
         self.frame_index += CONFIG["ANIMATION_SPEED"]
         if self.frame_index >= len(self.frames_dict[self.etat]):
             self.frame_index = 0
+            if self.is_stunned and self.etat == "idle":
+                self.is_stunned = False
 
     def draw(self, surface):
         self.image = self.frames_dict[self.etat][int(self.frame_index)]
@@ -180,6 +189,7 @@ class Player:
         self.is_dodging = False
         self.facing_left = False
         self.health = CONFIG["MAX_HEALTH"]
+        self.is_stunned = False
 
 
     def get_attack_damage(self):
@@ -192,4 +202,4 @@ class Player:
         return 0
     
     def can_hit(self):
-        return self.is_attacking and int(self.frame_index) == 2 
+        return self.is_attacking and int(self.frame_index) == 2 and not self.is_dodging
