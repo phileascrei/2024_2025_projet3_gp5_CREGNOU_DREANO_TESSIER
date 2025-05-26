@@ -23,6 +23,7 @@ class Player:
         self.last_dir = "right"
         self.last_attack_frame = -1
 
+
         self.left_key = left_key
         self.right_key = right_key
         self.jump_key = jump_key
