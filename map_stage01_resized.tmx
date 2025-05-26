@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="50">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="54">
  <imagelayer id="1" name="Background">
   <image source="stage01_resized.png" width="1920" height="1080"/>
  </imagelayer>
  <objectgroup id="3" name="Calque d'Objets 1">
-  <object id="16" name="collision" x="1916" y="0" width="12" height="1058"/>
-  <object id="17" name="collision" x="-44" y="-2" width="56" height="1054"/>
-  <object id="22" name="collision" x="66" y="508">
-   <polygon points="0,0 126,-38 156,-22 114,6 198,44 228,24 342,34 350,38 288,84 176,86"/>
-  </object>
-  <object id="25" name="collision" x="1040" y="652">
-   <polygon points="0,0 114,44 -86,68 -168,28 -92,22 -94,-58 -110,-58 -112,-70 -136,-88 -188,-88 -214,-60 -216,4 -160,28 -90,18 -66,-86 -20,-82 6,-68 -16,22"/>
-  </object>
-  <object id="33" name="collision" x="1414" y="858">
-   <polygon points="0,0 -84,-26 -174,-28 -260,-12 -262,2 -258,16 -238,28 -196,32 -200,86 -254,98 -266,116 -236,136 -208,140 -170,144 -128,140 -88,142 -38,134 6,124 -2,98 -14,86 -42,80 -56,76 -76,66 -86,42 -34,38 -6,30 6,22"/>
-  </object>
-  <object id="34" name="collision" x="420" y="740">
-   <polygon points="0,0 -40,20 -60,14 -56,24 -114,70 -104,94 -22,26 14,24 16,16"/>
-  </object>
-  <object id="44" name="collision" x="16" y="1022" width="1912" height="66"/>
   <object id="47" name="collision" x="460" y="502" width="116" height="4"/>
   <object id="48" name="collision" x="704" y="512" width="94" height="2"/>
+  <object id="50" name="collision" x="1160.08" y="837.836" width="249.533" height="14.8728"/>
+  <object id="51" name="collision" x="960.124" y="684.15" width="194.999" height="28.0931"/>
+  <object id="52" name="collision" x="841.141" y="584.998" width="117.33" height="92.5421"/>
+  <object id="53" name="collision" x="123.94" y="551.947" width="294.152" height="38.0083"/>
  </objectgroup>
 </map>
