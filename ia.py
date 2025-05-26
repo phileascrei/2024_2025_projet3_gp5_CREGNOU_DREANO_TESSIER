@@ -1,5 +1,6 @@
 
 import random
+from collections import defaultdict
 
 class FighterAI:
     def __init__(self, player):
@@ -45,13 +46,13 @@ class FighterAI:
 
     def perform_action(self, action, collision_rects):
         keys = {
-            "left": self.player.left_key,
-            "right": self.player.right_key,
-            "jump": self.player.jump_key,
-            "dodge": self.player.dodge_key,
-            "attack": self.player.attack_key,
-        }
-        fake_touches = [False] * 512
+        "left": self.player.left_key,
+        "right": self.player.right_key,
+        "jump": self.player.jump_key,
+        "dodge": self.player.dodge_key,
+        "attack": self.player.attack_key,
+    }
+        fake_touches = defaultdict(lambda: False)  # ← ne lève jamais d’erreur
         if action in keys:
             fake_touches[keys[action]] = True
         self.player.update(fake_touches, collision_rects)

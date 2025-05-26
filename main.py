@@ -35,7 +35,7 @@ for obj in tmx_data.objects:
 clock = pygame.time.Clock()
 joueur2 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_q, pygame.K_d, pygame.K_z, pygame.K_LSHIFT, pygame.K_s, pygame.K_e)
 joueur1 = Player(100, CONFIG["WINDOW_HEIGHT"] - CONFIG["PLAYER_HEIGHT"], pygame.K_f, pygame.K_h, pygame.K_t, pygame.K_RCTRL, pygame.K_g, pygame.K_r)
-ia = FighterAI(joueur2)
+ia = FighterAI(joueur1)
 
 
 running = True
@@ -50,7 +50,7 @@ while running:
     touches = pygame.key.get_pressed()
 
     draw_map(fenetre, tmx_data)
-    joueur1.update(touches, collision_rects)
+    ia.act(joueur1, collision_rects)
     joueur1.draw(fenetre)
     joueur1.draw_health_bar(fenetre, 20, 20)
 
