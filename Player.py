@@ -212,3 +212,8 @@ class Player:
     
     def can_hit(self):
         return self.is_attacking and int(self.frame_index) == 2 and not self.is_dodging
+    
+    def reset_jump_state(self):
+        self.in_air = False
+        self.is_charging_jump = False
+        self.vitesse_y = 0

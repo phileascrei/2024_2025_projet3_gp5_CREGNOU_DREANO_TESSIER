@@ -26,9 +26,9 @@ CONFIG = {
     "JUMP_FORCE": 18,
     "ANIMATION_SPEED": 0.2,
     "MAX_HEALTH": 50,
-    "RECULE" : 10, # Valeur du recule pour une esquive
-    "DASH_SPEED" : 20, # Valeur du nombre de pixels à ajouter pour chaque frame du dash
-    "ATTACK_PROBABILITY" : [0.43, 0.43,0.04], # Probabilités d'attaque
+    "RECULE" : 10,
+    "DASH_SPEED" : 20,
+    "ATTACK_PROBABILITY" : [0.43, 0.43,0.04], 
 
 }
 

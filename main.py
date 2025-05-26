@@ -87,6 +87,7 @@ while running:
         joueur2.frame_index = 0
         if joueur2.health < 0:
             joueur2.health = 0
+        joueur2.reset_jump_state()
 
     if joueur2.can_hit() and joueur2.rect.colliderect(joueur1.rect) and not joueur1.is_dodging:
         joueur1.health -= joueur2.get_attack_damage()
@@ -106,6 +107,29 @@ while running:
         reward += 1
 
     ia.update_q_table(reward, ia.get_state(joueur1))
+
+    # === Système de récompense pour l'IA ===
+    reward = 0
+    
+    # Bonus : l'IA touche l'adversaire
+    if joueur1.can_hit() and joueur1.rect.colliderect(joueur2.rect) and not joueur2.is_dodging:
+        reward += 10  # action positive
+        reward -= 1 if joueur2.is_attacking else 0  # léger malus si elle attaque sans esquiver
+    
+    # Malus : l'IA prend un coup
+    if joueur2.can_hit() and joueur2.rect.colliderect(joueur1.rect) and not joueur1.is_dodging:
+        reward -= 10  # mauvaise action
+    
+    # Bonus si IA évite une attaque pendant qu’elle est proche
+    if abs(joueur1.pos_x - joueur2.pos_x) < 100 and joueur2.is_attacking and joueur1.is_dodging:
+        reward += 5
+    
+    # Petit malus si IA reste idle trop longtemps
+    if joueur1.etat == "idle":
+        reward -= 0.5
+    
+    # Apprentissage : feedback
+    ia.reward_feedback(reward, joueur2)
 
     pygame.display.flip()
 
