@@ -77,7 +77,6 @@ class Player:
         self._handle_movement(touches, courir)
         self._handle_jump(touches)
         self._apply_gravity()
-        self.check_collisions(collision_rects)
         self._update_animation()
 
     def start_attack(self):
@@ -87,11 +86,13 @@ class Player:
         self.frame_index = 0
         self.is_attacking = True
 
+
     def _update_attack(self): 
+        # Dash sur attack_3 entre la 3e et la 8e frame (index 2 à 7 inclus)
         if self.etat == "attack_3":
             dash_start = 2
             dash_end = 7
-            dash_distance = CONFIG["DASH_SPEED"]
+            dash_distance = CONFIG["DASH_SPEED"]  # dash réparti sur 6 frames
             if dash_start <= int(self.frame_index) <= dash_end:
                 if self.facing_left:
                     self.pos_x -= dash_distance
@@ -152,17 +153,6 @@ class Player:
             self.vitesse_y = 0
             self.in_air = False
 
-    def check_collisions(self, collision_rects):
-        self.rect.midbottom = (int(self.pos_x), int(self.pos_y))
-    # Empêche de sortir de la fenêtre horizontalement
-        self.pos_x = max(0 + self.rect.width // 2, min(self.pos_x, CONFIG["WINDOW_WIDTH"] - self.rect.width // 2))
-        for rect in collision_rects:
-            if self.rect.colliderect(rect):
-                if self.vitesse_y > 0:
-                    self.pos_y = rect.top
-                    self.vitesse_y = 0
-                    self.in_air = False
-
     def _update_animation(self):
         if self.in_air and not self.is_charging_jump:
             self.etat = "jump"
@@ -202,6 +192,7 @@ class Player:
         self.health = CONFIG["MAX_HEALTH"]
         self.is_stunned = False
 
+
     def get_attack_damage(self):
         if self.etat == "attack_1":
             return 1
@@ -218,3 +209,4 @@ class Player:
         self.in_air = False
         self.is_charging_jump = False
         self.vitesse_y = 0
+

@@ -90,3 +90,6 @@ class FighterAI:
             return  # Ne fait rien
         elif action == "right" and self.player.pos_x + self.player.rect.width >= CONFIG["WINDOW_WIDTH"]:
             return  # Ne fait rien
+
+
+
